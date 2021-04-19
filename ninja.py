@@ -21,9 +21,8 @@ with open(f'{config_path}/ninja.json', "r") as config_file:
     colors = config['colors']
     arg_rememeber = config['remember']
 
-is_alt = False
 t = time()
-
+is_alt: bool = False
 
 app = QApplication(sys.argv)
 scr = app.desktop().screenGeometry()
@@ -56,6 +55,7 @@ def remove_remember():
 
 
 def check_similar(arg):
+    arg_rememeber.sort()
     for r in arg_rememeber:
         if r.startswith(arg) and r != arg:
             lab.setText(
@@ -66,14 +66,15 @@ def check_similar(arg):
             f'<h1 style="text-align: center;">{arg}</h1>')
 
 
-def auto_complete(is_alt=False):
+def auto_complete():
+    global is_alt
     arg = check_similar(inp.text())
     if arg is not None:
         if is_alt:
+            run_it()
+        else:
             inp.setText(arg)
             lab.setText(f'<h1 style="text-align: center;">{arg}</h1>')
-        else:
-            run_it()
     else:
         run_it()
 
@@ -92,12 +93,22 @@ def lost_focus():
         app.exit()
 
 
+def on_release(key):
+    global is_alt
+    try:
+        if key == keyboard.Key.alt:
+            is_alt = False
+    except:
+        pass
+
+
 def on_press(key):
+    global is_alt
     try:
         if key == keyboard.Key.esc:
             app.exit()
         elif key == keyboard.Key.alt:
-            auto_complete(True)
+            is_alt = True
         elif key == keyboard.Key.delete:
             remove_remember()
     except:
@@ -118,7 +129,7 @@ window.setWindowTitle('Ninja')
 window.setGeometry(int(wid), int(hei / 2), 500, 200)
 window.show()
 
-listener = keyboard.Listener(on_press=on_press)
+listener = keyboard.Listener(on_press=on_press, on_release=on_release)
 listener.start()
 app.focusChanged.connect(lost_focus)
 sys.exit(app.exec_())
