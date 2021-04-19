@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import sys
+import json
 
 from time import time
 
@@ -14,12 +15,14 @@ from PyQt5.QtWidgets import QLineEdit
 from PyQt5.QtWidgets import QGridLayout
 from PyQt5.QtWidgets import QWidget
 
-config_path = f'{os.getenv("HOME")}/.config/ninja/ninja.conf'
-color = open(config_path, "r").read()
+config_path = f'{os.getenv("HOME")}/.config/ninja'
+with open(f'{config_path}/ninja.json', "r") as config_file:
+    config = json.load(config_file)
+    colors = config['colors']
+    arg_rememeber = config['remember']
 
 is_alt = False
 t = time()
-arg_rememeber = []
 
 
 app = QApplication(sys.argv)
@@ -32,16 +35,31 @@ lab = QLabel('')
 inp = QLineEdit('')
 
 
+def write_remember():
+    with open(f'{config_path}/ninja.json', "w") as config_file:
+        config['remember'] = arg_rememeber
+        json.dump(config, config_file)
+
+
 def remember(arg):
     if arg not in arg_rememeber:
         arg_rememeber.append(arg)
+        write_remember()
+
+
+def remove_remember():
+    arg = check_similar(inp.text())
+    if arg in arg_rememeber:
+        arg_rememeber.remove(arg)
+        write_remember()
+    check_similar(inp.text())
 
 
 def check_similar(arg):
     for r in arg_rememeber:
         if r.startswith(arg) and r != arg:
             lab.setText(
-                f'<h1 style="text-align: center;">{arg}<span style="color: {color}">{r[len(arg):]}</span></h1>')
+                f'<h1 style="text-align: center;">{arg}<span style="color: {colors["highlight"]}">{r[len(arg):]}</span></h1>')
             return r
     else:
         lab.setText(
@@ -80,6 +98,8 @@ def on_press(key):
             app.exit()
         elif key == keyboard.Key.alt:
             auto_complete(True)
+        elif key == keyboard.Key.delete:
+            remove_remember()
     except:
         pass
 
