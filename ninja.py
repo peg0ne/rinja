@@ -59,11 +59,11 @@ def check_similar(arg):
     for r in arg_rememeber:
         if r.startswith(arg) and r != arg:
             lab.setText(
-                f'<h1 style="text-align: center;">{arg}<span style="color: {colors["highlight"]}">{r[len(arg):]}</span></h1>')
+                f'<h1 style="text-align: center;">{arg}|<span style="color: {colors["highlight"]}">{r[len(arg):]}</span></h1>')
             return r
     else:
         lab.setText(
-            f'<h1 style="text-align: center;">{arg}</h1>')
+            f'<h1 style="text-align: center;">{arg}|</h1>')
 
 
 def auto_complete():
@@ -74,7 +74,7 @@ def auto_complete():
             run_it()
         else:
             inp.setText(arg)
-            lab.setText(f'<h1 style="text-align: center;">{arg}</h1>')
+            lab.setText(f'<h1 style="text-align: center;">{arg}|</h1>')
     else:
         run_it()
 
