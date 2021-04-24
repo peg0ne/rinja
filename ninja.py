@@ -7,6 +7,7 @@ from time import time
 
 from pynput import keyboard
 
+from PyQt5.QtWidgets import QDesktopWidget
 from PyQt5.QtWidgets import QTextBrowser
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QLabel
@@ -25,10 +26,7 @@ t = time()
 is_alt: bool = False
 
 app = QApplication(sys.argv)
-scr = app.desktop().screenGeometry()
 
-wid = scr.width()
-hei = scr.height()
 
 lab = QLabel('')
 inp = QLineEdit('')
@@ -125,8 +123,17 @@ window = QWidget()
 lab.setParent(window)
 inp.setParent(window)
 
+qtRectangle = window.frameGeometry()
+centerPoint = QDesktopWidget().availableGeometry().center()
+qtRectangle.moveCenter(centerPoint)
+window.move(qtRectangle.topLeft())
+
 window.setWindowTitle('Ninja')
-window.setGeometry(int(wid), int(hei / 2), 500, 200)
+window.setGeometry(0, 0, 500, 200)
+qtRectangle = window.frameGeometry()
+centerPoint = QDesktopWidget().availableGeometry().center()
+qtRectangle.moveCenter(centerPoint)
+window.move(qtRectangle.topLeft())
 window.show()
 
 listener = keyboard.Listener(on_press=on_press, on_release=on_release)
