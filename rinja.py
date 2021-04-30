@@ -16,8 +16,8 @@ from PyQt5.QtWidgets import QLineEdit
 from PyQt5.QtWidgets import QGridLayout
 from PyQt5.QtWidgets import QWidget
 
-config_path = f'{os.getenv("HOME")}/.config/ninja'
-with open(f'{config_path}/ninja.json', "r") as config_file:
+config_path = f'{os.getenv("HOME")}/.config/rinja'
+with open(f'{config_path}/rinja.json', "r") as config_file:
     config = json.load(config_file)
     colors = config['colors']
     arg_rememeber = config['remember']
@@ -33,7 +33,7 @@ inp = QLineEdit('')
 
 
 def write_remember():
-    with open(f'{config_path}/ninja.json', "w") as config_file:
+    with open(f'{config_path}/rinja.json', "w") as config_file:
         config['remember'] = arg_rememeber
         json.dump(config, config_file)
 
@@ -128,7 +128,7 @@ centerPoint = QDesktopWidget().availableGeometry().center()
 qtRectangle.moveCenter(centerPoint)
 window.move(qtRectangle.topLeft())
 
-window.setWindowTitle('Ninja')
+window.setWindowTitle('Rinja')
 window.setGeometry(0, 0, 500, 200)
 qtRectangle = window.frameGeometry()
 centerPoint = QDesktopWidget().availableGeometry().center()

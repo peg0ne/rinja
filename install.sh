@@ -2,12 +2,12 @@
 pip3 install PyQt5
 pip3 install pynput
 THISDIR=$(dirname "$0")
-CONFIGPATH="$HOME/.config/ninja"
+CONFIGPATH="$HOME/.config/rinja"
 BASETEXT="{\"colors\": {\"highlight\":\"#333333\"}, \"remember\": []}"
 
 mkdir "$CONFIGPATH"
-cat "$CONFIGPATH/ninja.json"
-echo "$BASETEXT" > "$CONFIGPATH/ninja.json"
-chmod u+x "$THISDIR/ninja.py"
-ln -s "$THISDIR/ninja.py" "$HOME/.local/bin/ninja"
+cat "$CONFIGPATH/rinja.json"
+echo "$BASETEXT" > "$CONFIGPATH/rinja.json"
+chmod u+x "$THISDIR/rinja.py"
+ln -s "$THISDIR/rinja.py" "$HOME/.local/bin/rinja"
 
