@@ -16,17 +16,19 @@ from PyQt5.QtWidgets import QLineEdit
 from PyQt5.QtWidgets import QGridLayout
 from PyQt5.QtWidgets import QWidget
 
+H1_CENTER = '<h1 style="text-align: center;">'
+
 config_path = f'{os.getenv("HOME")}/.config/rinja'
 with open(f'{config_path}/rinja.json', "r") as config_file:
     config = json.load(config_file)
     colors = config['colors']
+    rect = config['rect']
     arg_rememeber = config['remember']
 
 t = time()
 is_alt: bool = False
 
 app = QApplication(sys.argv)
-
 
 lab = QLabel('')
 inp = QLineEdit('')
@@ -57,11 +59,11 @@ def check_similar(arg):
     for r in arg_rememeber:
         if r.startswith(arg) and r != arg:
             lab.setText(
-                f'<h1 style="text-align: center;">{arg}|<span style="color: {colors["highlight"]}">{r[len(arg):]}</span></h1>')
+                f'{H1_CENTER}{arg}|<span style="color: {colors["highlight"]}">{r[len(arg):]}</span></h1>')
             return r
     else:
         lab.setText(
-            f'<h1 style="text-align: center;">{arg}|</h1>')
+            f'{H1_CENTER}{arg}|</h1>')
 
 
 def auto_complete():
@@ -72,7 +74,7 @@ def auto_complete():
             run_it()
         else:
             inp.setText(arg)
-            lab.setText(f'<h1 style="text-align: center;">{arg}|</h1>')
+            lab.setText(f'{H1_CENTER}{arg}|</h1>')
     else:
         run_it()
 
@@ -117,7 +119,7 @@ inp.textEdited[str].connect(check_similar)
 inp.returnPressed.connect(auto_complete)
 inp.setGeometry(0, 0, 0, 0)
 
-lab.setGeometry(0, 0, 500, 200)
+lab.setGeometry(0, 0, rect['width'], rect['height'])
 
 window = QWidget()
 lab.setParent(window)
@@ -129,7 +131,7 @@ qtRectangle.moveCenter(centerPoint)
 window.move(qtRectangle.topLeft())
 
 window.setWindowTitle('Rinja')
-window.setGeometry(0, 0, 500, 200)
+window.setGeometry(0, 0, rect['width'], rect['height'])
 qtRectangle = window.frameGeometry()
 centerPoint = QDesktopWidget().availableGeometry().center()
 qtRectangle.moveCenter(centerPoint)
