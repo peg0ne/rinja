@@ -54,7 +54,7 @@ def remove_remember():
     check_similar(inp.text())
 
 
-def check_similar(arg):
+def format_args(arg, cursor_pos):
     arg_rememeber.sort()
     for r in arg_rememeber:
         if r.startswith(arg) and r != arg:
@@ -63,7 +63,18 @@ def check_similar(arg):
             return r
     else:
         lab.setText(
-            f'{H1_CENTER}{arg}|</h1>')
+            f'{H1_CENTER}{arg[:cursor_pos]}|{arg[cursor_pos:]}</h1>')
+
+
+def check_similar(arg):
+    cursor_pos = inp.cursorPosition()
+    format_args(arg, cursor_pos)
+
+
+def cursor_moved(pos):
+    arg = inp.text()
+    cursor_pos = inp.cursorPosition()
+    format_args(arg, cursor_pos)
 
 
 def auto_complete():
@@ -117,6 +128,7 @@ def on_press(key):
 
 inp.textEdited[str].connect(check_similar)
 inp.returnPressed.connect(auto_complete)
+inp.cursorPositionChanged.connect(cursor_moved)
 inp.setGeometry(0, 0, 0, 0)
 
 lab.setGeometry(0, 0, rect['width'], rect['height'])
