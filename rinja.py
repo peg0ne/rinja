@@ -47,12 +47,11 @@ def remember(arg):
 
 
 def remove_remember():
-    arg = format_args(inp.text())
-    print('removing' + arg)
+    arg = format_args()
     if arg in arg_rememeber:
         arg_rememeber.remove(arg)
         write_remember()
-    format_text()
+    format_args()
 
 
 def format_text(r=None):
