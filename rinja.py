@@ -47,40 +47,38 @@ def remember(arg):
 
 
 def remove_remember():
-    arg = check_similar(inp.text())
+    arg = format_args(inp.text())
     print('removing' + arg)
     if arg in arg_rememeber:
         arg_rememeber.remove(arg)
         write_remember()
-    check_similar(inp.text())
+    format_text()
 
 
-def format_args(arg, cursor_pos):
+def format_text(r=None):
+    arg = inp.text()
+    cursor_pos = inp.cursorPosition()
+    if r == None:
+        return f'{H1_CENTER}{arg[:cursor_pos]}|{arg[cursor_pos:]}</h1>'
+    else:
+        return f'{H1_CENTER}{arg[:cursor_pos]}|{arg[cursor_pos:]}<span style="color: {colors["highlight"]}">{r[len(arg):]}</span></h1>'
+
+
+def format_args():
+    arg = inp.text()
     arg_rememeber.sort()
     for r in arg_rememeber:
         if r.startswith(arg) and r != arg:
-            lab.setText(
-                f'{H1_CENTER}{arg[:cursor_pos]}|{arg[cursor_pos:]}<span style="color: {colors["highlight"]}">{r[len(arg):]}</span></h1>')
+            lab.setText(format_text(r))
             return r
     else:
         lab.setText(
-            f'{H1_CENTER}{arg[:cursor_pos]}|{arg[cursor_pos:]}</h1>')
-
-
-def check_similar(arg):
-    cursor_pos = inp.cursorPosition()
-    return format_args(arg, cursor_pos)
-
-
-def cursor_moved(pos):
-    arg = inp.text()
-    cursor_pos = inp.cursorPosition()
-    format_args(arg, cursor_pos)
+            format_text())
 
 
 def auto_complete():
     global is_alt
-    arg = check_similar(inp.text())
+    arg = format_args()
     cursor_pos = inp.cursorPosition()
     if arg is not None:
         if is_alt:
@@ -89,8 +87,7 @@ def auto_complete():
             inp.setText(arg)
             inp.setCursorPosition(len(arg))
             cursor_pos = inp.cursorPosition()
-            lab.setText(
-                f'{H1_CENTER}{arg[:cursor_pos]}|{arg[cursor_pos:]}</h1>')
+            lab.setText(format_text())
     else:
         run_it()
 
@@ -131,9 +128,9 @@ def on_press(key):
         pass
 
 
-inp.textEdited[str].connect(check_similar)
+inp.textEdited[str].connect(format_args)
 inp.returnPressed.connect(auto_complete)
-# inp.cursorPositionChanged.connect(cursor_moved)
+inp.cursorPositionChanged.connect(format_args)
 inp.setGeometry(0, 0, 0, 0)
 
 lab.setGeometry(0, 0, rect['width'], rect['height'])
