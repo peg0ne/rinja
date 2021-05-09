@@ -48,6 +48,7 @@ def remember(arg):
 
 def remove_remember():
     arg = check_similar(inp.text())
+    print('removing' + arg)
     if arg in arg_rememeber:
         arg_rememeber.remove(arg)
         write_remember()
@@ -59,7 +60,7 @@ def format_args(arg, cursor_pos):
     for r in arg_rememeber:
         if r.startswith(arg) and r != arg:
             lab.setText(
-                f'{H1_CENTER}{arg}|<span style="color: {colors["highlight"]}">{r[len(arg):]}</span></h1>')
+                f'{H1_CENTER}{arg[:cursor_pos]}|{arg[cursor_pos:]}<span style="color: {colors["highlight"]}">{r[len(arg):]}</span></h1>')
             return r
     else:
         lab.setText(
@@ -68,7 +69,7 @@ def format_args(arg, cursor_pos):
 
 def check_similar(arg):
     cursor_pos = inp.cursorPosition()
-    format_args(arg, cursor_pos)
+    return format_args(arg, cursor_pos)
 
 
 def cursor_moved(pos):
@@ -80,12 +81,16 @@ def cursor_moved(pos):
 def auto_complete():
     global is_alt
     arg = check_similar(inp.text())
+    cursor_pos = inp.cursorPosition()
     if arg is not None:
         if is_alt:
             run_it()
         else:
             inp.setText(arg)
-            lab.setText(f'{H1_CENTER}{arg}|</h1>')
+            inp.setCursorPosition(len(arg))
+            cursor_pos = inp.cursorPosition()
+            lab.setText(
+                f'{H1_CENTER}{arg[:cursor_pos]}|{arg[cursor_pos:]}</h1>')
     else:
         run_it()
 
@@ -128,7 +133,7 @@ def on_press(key):
 
 inp.textEdited[str].connect(check_similar)
 inp.returnPressed.connect(auto_complete)
-inp.cursorPositionChanged.connect(cursor_moved)
+# inp.cursorPositionChanged.connect(cursor_moved)
 inp.setGeometry(0, 0, 0, 0)
 
 lab.setGeometry(0, 0, rect['width'], rect['height'])
