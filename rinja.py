@@ -7,6 +7,7 @@ from time import time
 
 from pynput import keyboard
 
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDesktopWidget
 from PyQt5.QtWidgets import QTextBrowser
 from PyQt5.QtWidgets import QApplication
@@ -149,6 +150,7 @@ qtRectangle = window.frameGeometry()
 centerPoint = QDesktopWidget().availableGeometry().center()
 qtRectangle.moveCenter(centerPoint)
 window.move(qtRectangle.topLeft())
+window.setWindowFlags(Qt.WindowStaysOnTopHint)
 window.show()
 
 listener = keyboard.Listener(on_press=on_press, on_release=on_release)
