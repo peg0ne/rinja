@@ -132,6 +132,7 @@ inp.textEdited[str].connect(format_args)
 inp.returnPressed.connect(auto_complete)
 inp.cursorPositionChanged.connect(format_args)
 inp.setGeometry(0, 0, 0, 0)
+lab.setStyleSheet(f'color: {colors["foreground"]};')
 
 lab.setGeometry(0, 0, rect['width'], rect['height'])
 lab.setStyleSheet(f'background-color: {colors["background"]};')
