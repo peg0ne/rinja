@@ -59,9 +59,9 @@ def format_text(r=None):
     arg = inp.text()
     cursor_pos = inp.cursorPosition()
     if r == None:
-        return f'{H1_CENTER}{arg[:cursor_pos]}|{arg[cursor_pos:]}</h1>'
+        return f'<h1 style="text-align: center; color: {colors["foreground"]}">{arg[:cursor_pos]}|{arg[cursor_pos:]}</h1>'
     else:
-        return f'{H1_CENTER}{arg[:cursor_pos]}|{arg[cursor_pos:]}<span style="color: {colors["highlight"]}">{r[len(arg):]}</span></h1>'
+        return f'<h1 style="text-align: center; color: {colors["foreground"]}">{arg[:cursor_pos]}|{arg[cursor_pos:]}<span style="color: {colors["highlight"]}">{r[len(arg):]}</span></h1>'
 
 
 def format_args():
@@ -132,7 +132,7 @@ inp.textEdited[str].connect(format_args)
 inp.returnPressed.connect(auto_complete)
 inp.cursorPositionChanged.connect(format_args)
 inp.setGeometry(0, 0, 0, 0)
-lab.setStyleSheet(f'color: {colors["foreground"]};')
+inp.setStyleSheet(f'color: {colors["foreground"]};')
 
 lab.setGeometry(0, 0, rect['width'], rect['height'])
 lab.setStyleSheet(f'background-color: {colors["background"]};')
