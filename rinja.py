@@ -134,6 +134,7 @@ inp.cursorPositionChanged.connect(format_args)
 inp.setGeometry(0, 0, 0, 0)
 
 lab.setGeometry(0, 0, rect['width'], rect['height'])
+lab.setStyleSheet(f'background-color: {colors["background"]};')
 
 window = QWidget()
 lab.setParent(window)
