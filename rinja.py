@@ -58,11 +58,13 @@ def remove_remember():
 def format_text(r=None):
     arg = inp.text()
     cursor_pos = inp.cursorPosition()
+    style=f'<span style="color: {colors["foreground"]}">'
+    arrowstyle=f'<h1 style="text-align: left; margin: 20px; color: {colors["highlight"]}">'
+    highlightstyle=f'<span style="color: {colors["highlight"]}">'
     if r == None:
-        return f'<h1 style="text-align: center; color: {colors["foreground"]}">{arg[:cursor_pos]}|{arg[cursor_pos:]}</h1>'
+        return f'{arrowstyle}>  {style}{arg[:cursor_pos]}|{arg[cursor_pos:]}</span></h1>'
     else:
-        return f'<h1 style="text-align: center; color: {colors["foreground"]}">{arg[:cursor_pos]}|{arg[cursor_pos:]}<span style="color: {colors["highlight"]}">{r[len(arg):]}</span></h1>'
-
+        return f'{arrowstyle}>  {style}{arg[:cursor_pos]}|{arg[cursor_pos:]}{highlightstyle}{r[len(arg):]}</span></h1>'
 
 def format_args():
     arg = inp.text()
@@ -99,6 +101,7 @@ def run_it():
     inp.clear()
     lab.clear()
     os.system(f"setsid {args} &")
+    app.exit()
 
 
 def lost_focus():
@@ -154,6 +157,7 @@ qtRectangle.moveCenter(centerPoint)
 window.move(qtRectangle.topLeft())
 window.setWindowFlags(Qt.WindowStaysOnTopHint)
 window.show()
+format_args()
 
 listener = keyboard.Listener(on_press=on_press, on_release=on_release)
 listener.start()
